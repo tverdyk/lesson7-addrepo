@@ -6,55 +6,59 @@ Apache с определенными опциями).
 
 # Создать свой RPM пакет
 *  Подготовка
-*  
-      [root@almalinux9 ~]# yum install -y wget rpmdevtools rpm-build              createrepo yum-utils cmake gcc git nano -y
+*        [root@almalinux9 ~]# yum install -y wget rpmdevtools rpm-build
+*        createrepo yum-utils cmake gcc git nano -y
 *  Возьмем пакет Nginx и соберем его с дополнительным модулем ngx_broli.
    Загрузим SRPM пакет Nginx для дальнейшей работы над ним.
  
-      root@almalinux9 ~]# mkdir rpm && cd rpm
-      [root@almalinux9 rpm]# yumdownloader --source nginx
-      nginx-1.20.1-28.el9_8.4.alma.1.src.rpm                                                                                2.6 MB/s | 1.1 MB
+         root@almalinux9 ~]# mkdir rpm && cd rpm
+         [root@almalinux9 rpm]# yumdownloader --source nginx
+         nginx-1.20.1-28.el9_8.4.alma.1.src.rpm  
 
 *  При установке такого пакета в домашней директории создается дерево каталогов для сборки, далее поставим все зависимости для сборки пакета Nginx:
-      [root@almalinux9 rpm]# rpm -Uvh nginx*.src.rpm
-      Updating / installing...
-      1:nginx-2:1.20.1-28.el9_8.4.alma.1 warning: user mockbuild does not exist - using root
-      warning: group mock does not exist - using root
-      ################################# [100%]
+  
+        [root@almalinux9 rpm]# rpm -Uvh nginx*.src.rpm
+        Updating / installing...
+        1:nginx-2:1.20.1-28.el9_8.4.alma.1 warning: user mockbuild does not exist - using root
+        warning: group mock does not exist - using root
+        ################################# [100%]
    
-      [root@almalinux9 rpm]# yum-builddep nginx # подтянит пачку зависимостей.
+        [root@almalinux9 rpm]# yum-builddep nginx # подтянит пачку зависимостей.
 
 *  Нужно скачать исходный код модуля ngx_brotli — он потребуется при сборке:
-      [root@almalinux9 ~]# git clone --recurse-submodules -j8 https://github.com/google/ngx_brotli
-      Cloning into 'ngx_brotli'...
-      [root@almalinux9 ~]# cd ngx_brotli/deps/brotli
-      [root@almalinux9 brotli]# mkdir out && cd out
+
+        [root@almalinux9 ~]# git clone --recurse-submodules -j8 https://github.com/google/ngx_brotli
+        Cloning into 'ngx_brotli'...
+        [root@almalinux9 ~]# cd ngx_brotli/deps/brotli
+        [root@almalinux9 brotli]# mkdir out && cd out
 
 *  Собираем модуль ngx_brotli:
-      [root@almalinux9 out]# cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DCMAKE_C_FLAGS="-Ofast -m64 -march=native -mtune=native -flto -funroll-loops -ffunction-sections -fdata-sections -Wl,--gc-sections" -DCMAKE_CXX_FLAGS="-Ofast -m64 -march=native -mtune=native -flto -funroll-loops -ffunction-sections -fdata-sections -Wl,--gc-sections" -DCMAKE_INSTALL_PREFIX=./installed ..
-      -- The C compiler identification is GNU 11.5.0
-      -- Detecting C compiler ABI info
-      -- Detecting C compiler ABI info - done
-      -- Check for working C compiler: /bin/cc - skipped
-      -- Detecting C compile features
-      -- Detecting C compile features - done
-      -- Build type is 'Release'
-      -- Performing Test BROTLI_EMSCRIPTEN
-      -- Performing Test BROTLI_EMSCRIPTEN - Failed
-      -- Compiler is not EMSCRIPTEN
-      -- Looking for log2
-      -- Looking for log2 - not found
-      -- Looking for log2
-      -- Looking for log2 - found
-      -- Configuring done (0.4s)
-      -- Generating done (0.1s)
-      CMake Warning:
+
+  
+       [root@almalinux9 out]# cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DCMAKE_C_FLAGS="-Ofast -m64 -march=native -mtune=native -flto -funroll-loops -ffunction-sections -fdata-sections -Wl,--gc-sections" -DCMAKE_CXX_FLAGS="-Ofast -m64 -march=native -mtune=native -flto -funroll-loops -ffunction-sections -fdata-sections -Wl,--gc-sections" -DCMAKE_INSTALL_PREFIX=./installed ..
+       -- The C compiler identification is GNU 11.5.0
+       -- Detecting C compiler ABI info
+       -- Detecting C compiler ABI info - done
+       -- Check for working C compiler: /bin/cc - skipped
+       -- Detecting C compile features
+       -- Detecting C compile features - done
+       -- Build type is 'Release'
+       -- Performing Test BROTLI_EMSCRIPTEN
+       -- Performing Test BROTLI_EMSCRIPTEN - Failed
+       -- Compiler is not EMSCRIPTEN
+       -- Looking for log2
+       -- Looking for log2 - not found
+       -- Looking for log2
+       -- Looking for log2 - found
+       -- Configuring done (0.4s)
+       -- Generating done (0.1s)
+       CMake Warning:
         Manually-specified variables were not used by the project:
         CMAKE_CXX_FLAGS
-      -- Build files have been written to: /root/ngx_brotli/deps/brotli/out    
-
-      [root@almalinux9 out]# cmake --build . --config Release -j 2 --target brotlienc
-           [root@almalinux9 out]# cmake --build . --config Release -j 2 --target brotlienc
+       -- Build files have been written to: /root/ngx_brotli/deps/brotli/out
+*
+*      [root@almalinux9 out]# cmake --build . --config Release -j 2 --target brotlienc
+       [root@almalinux9 out]# cmake --build . --config Release -j 2 --target brotlienc
         3%] Building C object CMakeFiles/brotlicommon.dir/c/common/constants.c.o
         6%] Building C object CMakeFiles/brotlicommon.dir/c/common/context.c.o
        13%] Building C object CMakeFiles/brotlicommon.dir/c/common/dictionary.c.o
@@ -88,31 +92,33 @@ Apache с определенными опциями).
       100%] Built target brotlienc
 
 *  Поправить сам spec файл, чтобы Nginx собирался с необходимыми нам опциями: находим секцию с параметрами configure (до условий if) и добавляем указание на модуль (не забудьте указать завершающий обратный слэш):
-      [root@almalinux9 SPECS]# ls
-      nginx.spec
-      [root@almalinux9 SPECS]# nano nginx.spec
-      export DESTDIR=%{buildroot}
-      #So the perl module finds its symbols:
-      nginx_ldopts="$RPM_LD_FLAGS -Wl,-E"
-      if ! ./configure \
-      --prefix=%{_datadir}/nginx \
-      --sbin-path=%{_sbindir}/nginx \
-      --modules-path=%{nginx_moduledir} \
-      --conf-path=%{_sysconfdir}/nginx/nginx.conf \
-      --error-log-path=%{_localstatedir}/log/nginx/error.log \
-      --http-log-path=%{_localstatedir}/log/nginx/access.log \
-      --http-client-body-temp-path=%{_localstatedir}/lib/nginx/tmp/client_body \
-      --http-proxy-temp-path=%{_localstatedir}/lib/nginx/tmp/proxy \
-      --http-fastcgi-temp-path=%{_localstatedir}/lib/nginx/tmp/fastcgi \
-      --http-uwsgi-temp-path=%{_localstatedir}/lib/nginx/tmp/uwsgi \
-      --http-scgi-temp-path=%{_localstatedir}/lib/nginx/tmp/scgi \
-      --pid-path=/run/nginx.pid \
-      --lock-path=/run/lock/subsys/nginx \
-      --user=%{nginx_user} \
-      --group=%{nginx_user} \
-      --with-compat \
-      --with-debug \
-      --add-module=/root/ngx_brotli \   # Добавили строку
+
+       [root@almalinux9 SPECS]# ls
+       nginx.spec
+   
+       [root@almalinux9 SPECS]# nano nginx.spec
+       export DESTDIR=%{buildroot}
+       #So the perl module finds its symbols:
+       nginx_ldopts="$RPM_LD_FLAGS -Wl,-E"
+       if ! ./configure \
+       --prefix=%{_datadir}/nginx \
+       --sbin-path=%{_sbindir}/nginx \
+       --modules-path=%{nginx_moduledir} \
+       --conf-path=%{_sysconfdir}/nginx/nginx.conf \
+       --error-log-path=%{_localstatedir}/log/nginx/error.log \
+       --http-log-path=%{_localstatedir}/log/nginx/access.log \
+       --http-client-body-temp-path=%{_localstatedir}/lib/nginx/tmp/client_body \
+       --http-proxy-temp-path=%{_localstatedir}/lib/nginx/tmp/proxy \
+       --http-fastcgi-temp-path=%{_localstatedir}/lib/nginx/tmp/fastcgi \
+       --http-uwsgi-temp-path=%{_localstatedir}/lib/nginx/tmp/uwsgi \
+       --http-scgi-temp-path=%{_localstatedir}/lib/nginx/tmp/scgi \
+       --pid-path=/run/nginx.pid \
+       --lock-path=/run/lock/subsys/nginx \
+       --user=%{nginx_user} \
+       --group=%{nginx_user} \
+       --with-compat \
+       --with-debug \
+       --add-module=/root/ngx_brotli \   # Добавили строку
 
 *  Запуск сборки 
       [root@almalinux9 SPECS]# rpmbuild -ba nginx.spec -D 'debug_package %{nil}'
