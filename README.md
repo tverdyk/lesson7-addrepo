@@ -120,84 +120,93 @@ Apache с определенными опциями).
        --with-debug \
        --add-module=/root/ngx_brotli \   # Добавили строку
 
-*  Запуск сборки 
-      [root@almalinux9 SPECS]# rpmbuild -ba nginx.spec -D 'debug_package %{nil}'
-      setting SOURCE_DATE_EPOCH=1783382400
-      Executing(%prep): /bin/sh -e /var/tmp/rpm-tmp.N2ZOWF
-      + umask 022
-      + cd /root/rpmbuild/BUILD
-      + cat /root/rpmbuild/SOURCES/maxim.key /root/rpmbuild/SOURCES/mdounin.key /root/rpmbuild/SOURCES/sb.key
-      + /usr/lib/rpm/redhat/gpgverify --keyring=/root/rpmbuild/BUILD/nginx.gpg --signature=/root/rpmbuild/SOURCES/nginx-1.20.1.tar.gz.asc --data=/root/      rpmbuild/SOURCES/nginx-1.20.1.tar.gz
-      gpgv: Signature made Tue May 25 15:42:56 2021 MSK
-      gpgv:                using RSA key 520A9993A1C052F8
-      gpgv: Good signature from "Maxim Dounin <mdounin@mdounin.ru>"
-      + cd /root/rpmbuild/BUILD
-      + rm -rf nginx-1.20.1
-      + /usr/bin/gzip -dc /root/rpmbuild/SOURCES/nginx-1.20.1.tar.gz
-      + /usr/bin/tar -xof -
-      + STATUS=0
-      + '[' 0 -ne 0 ']'
-      + cd nginx-1.20.1
-      + /usr/bin/chmod -Rf a+rX,u+w,g-w,o-w .
-      + /usr/bin/cat /root/rpmbuild/SOURCES/0001-remove-Werror-in-upstream-build-scripts.patch
-      ...
-      Executing(%clean): /bin/sh -e /var/tmp/rpm-tmp.bH4KHE
-      + umask 022
-      + cd /root/rpmbuild/BUILD
-      + cd nginx-1.20.1
-      + /usr/bin/rm -rf /root/rpmbuild/BUILDROOT/nginx-1.20.1-28.el9.4.alma.1.x86_64
-      + RPM_EC=0
-      ++ jobs -p
-      + exit 0
+*  Запуск сборки
 
-*  Проверка созданя пакетов
-      [root@almalinux9 ~]# ls rpmbuild/RPMS/x86_64/
-      nginx-1.20.1-28.el9.4.alma.1.x86_64.rpm                        nginx-mod-http-perl-1.20.1-28.el9.4.alma.1.x86_64.rpm
-      nginx-core-1.20.1-28.el9.4.alma.1.x86_64.rpm                   nginx-mod-http-xslt-filter-1.20.1-28.el9.4.alma.1.x86_64.rpm
-      nginx-mod-devel-1.20.1-28.el9.4.alma.1.x86_64.rpm              nginx-mod-mail-1.20.1-28.el9.4.alma.1.x86_64.rpm
-      nginx-mod-http-image-filter-1.20.1-28.el9.4.alma.1.x86_64.rpm  nginx-mod-stream-1.20.1-28.el9.4.alma.1.x86_64.rpm
+       [root@almalinux9 SPECS]# rpmbuild -ba nginx.spec -D 'debug_package %{nil}'
+       setting SOURCE_DATE_EPOCH=1783382400
+       Executing(%prep): /bin/sh -e /var/tmp/rpm-tmp.N2ZOWF
+       + umask 022
+       + cd /root/rpmbuild/BUILD
+       + cat /root/rpmbuild/SOURCES/maxim.key /root/rpmbuild/SOURCES/mdounin.key /root/rpmbuild/SOURCES/sb.key
+       + /usr/lib/rpm/redhat/gpgverify
+       --keyring=/root/rpmbuild/BUILD/nginx.gpg
+       --signature=/root/rpmbuild/SOURCES/nginx-1.20.1.tar.gz.asc
+       --data=/root/rpmbuild/SOURCES/nginx-1.20.1.tar.gz
+       gpgv: Signature made Tue May 25 15:42:56 2021 MSK
+       gpgv:                using RSA key 520A9993A1C052F8
+       gpgv: Good signature from "Maxim Dounin <mdounin@mdounin.ru>"
+       + cd /root/rpmbuild/BUILD
+       + rm -rf nginx-1.20.1
+       + /usr/bin/gzip -dc /root/rpmbuild/SOURCES/nginx-1.20.1.tar.gz
+       + /usr/bin/tar -xof -
+       + STATUS=0
+       + '[' 0 -ne 0 ']'
+       + cd nginx-1.20.1
+       + /usr/bin/chmod -Rf a+rX,u+w,g-w,o-w .
+       + /usr/bin/cat /root/rpmbuild/SOURCES/0001-remove-Werror-in-upstream-build-scripts.patch
+       ...
+       Executing(%clean): /bin/sh -e /var/tmp/rpm-tmp.bH4KHE
+       + umask 022
+       + cd /root/rpmbuild/BUILD
+       + cd nginx-1.20.1
+       + /usr/bin/rm -rf /root/rpmbuild/BUILDROOT/nginx-1.20.1-28.el9.4.alma.1.x86_64
+       + RPM_EC=0
+       ++ jobs -p
+       + exit 0
+
+*  Проверка созданя пакетов;
+
+       [root@almalinux9 ~]# ls rpmbuild/RPMS/x86_64/
+       nginx-1.20.1-28.el9.4.alma.1.x86_64.rpm                        nginx-mod-http-perl-1.20.1-28.el9.4.alma.1.x86_64.rpm
+       nginx-core-1.20.1-28.el9.4.alma.1.x86_64.rpm                   nginx-mod-http-xslt-filter-1.20.1-28.el9.4.alma.1.x86_64.rpm
+       nginx-mod-devel-1.20.1-28.el9.4.alma.1.x86_64.rpm              nginx-mod-mail-1.20.1-28.el9.4.alma.1.x86_64.rpm
+       nginx-mod-http-image-filter-1.20.1-28.el9.4.alma.1.x86_64.rpm  nginx-mod-stream-1.20.1-28.el9.4.alma.1.x86_64.rpm
       
 *  Копируем пакеты в общий каталог:
-      [root@almalinux9 ~]# cp ~/rpmbuild/RPMS/noarch/* ~/rpmbuild/RPMS/x86_64/
-      [root@almalinux9 ~]# cd ~/rpmbuild/RPMS/x86_64
-      [root@almalinux9 x86_64]# ls
-      nginx-1.20.1-28.el9.4.alma.1.x86_64.rpm              nginx-mod-http-image-filter-1.20.1-28.el9.4.alma.1.x86_64.rpm
-      nginx-all-modules-1.20.1-28.el9.4.alma.1.noarch.rpm  nginx-mod-http-perl-1.20.1-28.el9.4.alma.1.x86_64.rpm
-      nginx-core-1.20.1-28.el9.4.alma.1.x86_64.rpm         nginx-mod-http-xslt-filter-1.20.1-28.el9.4.alma.1.x86_64.rpm
-      nginx-filesystem-1.20.1-28.el9.4.alma.1.noarch.rpm   nginx-mod-mail-1.20.1-28.el9.4.alma.1.x86_64.rpm
-      nginx-mod-devel-1.20.1-28.el9.4.alma.1.x86_64.rpm    nginx-mod-stream-1.20.1-28.el9.4.alma.1.x86_64.rpm
+
+	   [root@almalinux9 ~]# cp ~/rpmbuild/RPMS/noarch/* ~/rpmbuild/RPMS/x86_64/
+       [root@almalinux9 ~]# cd ~/rpmbuild/RPMS/x86_64
+       [root@almalinux9 x86_64]# ls
+       nginx-1.20.1-28.el9.4.alma.1.x86_64.rpm              nginx-mod-http-image-filter-1.20.1-28.el9.4.alma.1.x86_64.rpm
+       nginx-all-modules-1.20.1-28.el9.4.alma.1.noarch.rpm  nginx-mod-http-perl-1.20.1-28.el9.4.alma.1.x86_64.rpm
+       nginx-core-1.20.1-28.el9.4.alma.1.x86_64.rpm         nginx-mod-http-xslt-filter-1.20.1-28.el9.4.alma.1.x86_64.rpm
+       nginx-filesystem-1.20.1-28.el9.4.alma.1.noarch.rpm   nginx-mod-mail-1.20.1-28.el9.4.alma.1.x86_64.rpm
+       nginx-mod-devel-1.20.1-28.el9.4.alma.1.x86_64.rpm    nginx-mod-stream-1.20.1-28.el9.4.alma.1.x86_64.rpm
       
 *   Теперь можно установить наш пакет и убедиться, что nginx работает:
-      [root@almalinux9 x86_64]# yum localinstall *.rpm
-      Last metadata expiration check: 0:29:38 ago on Sun Jul 26 10:21:30 2026.
-      Dependencies resolved.
-      =============================================================================================================================================
-       Package                                      Architecture            Version                                     Repository                           Size
-      =============================================================================================================================================
-      Installing:
-       nginx                                        x86_64                  2:1.20.1-28.el9.4.alma.1                    @commandline                         37 k
-       nginx-all-modules                            noarch                  2:1.20.1-28.el9.4.alma.1                    @commandline                  9.      2 k
-       nginx-core                                   x86_64                  2:1.20.1-28.el9.4.alma.1                    @commandline                  1.      0 M
-       nginx-filesystem                             noarch                  2:1.20.1-28.el9.4.alma.1                    @commandline                         11 k
-       nginx-mod-devel                              x86_64                  2:1.20.1-28.el9.4.alma.1                    @commandline                        745 k
-       nginx-mod-http-image-filter                  x86_64                  2:1.20.1-28.el9.4.alma.1                    @commandline                         21 k
-       nginx-mod-http-perl                          x86_64                  2:1.20.1-28.el9.4.alma.1                    @commandline                         32 k
-       nginx-mod-http-xslt-filter                   x86_64                  2:1.20.1-28.el9.4.alma.1                    @commandline                         20 k
-       nginx-mod-mail                               x86_64                  2:1.20.1-28.el9.4.alma.1                    @commandline                         54 k
-       nginx-mod-stream                             x86_64                  2:1.20.1-28.el9.4.alma.1                    @commandline                         80 k
-      Installing dependencies:
-       almalinux-logos-httpd                        noarch                  90.7-1.el9                                  appstream                            18 k
-      Transaction Summary
-      =============================================================================================================================================
-      Install  11 Packages
-      Total size: 2.0 M
-      Total download size: 18 k
-      Installed size: 9.5 M
-      Is this ok [y/N]: y
+
+        [root@almalinux9 x86_64]# yum localinstall *.rpm
+        Last metadata expiration check: 0:29:38 ago on Sun Jul 26 10:21:30 2026.
+        Dependencies resolved.
+        =============================================================================================================================================
+         Package                                      Architecture            Version                                     Repository                           Size
+        =============================================================================================================================================
+        Installing:
+        nginx                                        x86_64                  2:1.20.1-28.el9.4.alma.1                    @commandline                         37 k
+        nginx-all-modules                            noarch                  2:1.20.1-28.el9.4.alma.1                    @commandline                  9.      2 k
+        nginx-core                                   x86_64                  2:1.20.1-28.el9.4.alma.1                    @commandline                  1.      0 M
+        nginx-filesystem                             noarch                  2:1.20.1-28.el9.4.alma.1                    @commandline                         11 k
+        nginx-mod-devel                              x86_64                  2:1.20.1-28.el9.4.alma.1                    @commandline                        745 k
+        nginx-mod-http-image-filter                  x86_64                  2:1.20.1-28.el9.4.alma.1                    @commandline                         21 k
+        nginx-mod-http-perl                          x86_64                  2:1.20.1-28.el9.4.alma.1                    @commandline                         32 k
+        nginx-mod-http-xslt-filter                   x86_64                  2:1.20.1-28.el9.4.alma.1                    @commandline                         20 k
+        nginx-mod-mail                               x86_64                  2:1.20.1-28.el9.4.alma.1                    @commandline                         54 k
+        nginx-mod-stream                             x86_64                  2:1.20.1-28.el9.4.alma.1                    @commandline                         80 k
+        Installing dependencies:
+        almalinux-logos-httpd                        noarch                  90.7-1.el9                                  appstream                            18 k
+        Transaction Summary
+
+        =============================================================================================================================================
+        Install  11 Packages
+        Total size: 2.0 M
+        Total download size: 18 k
+        Installed size: 9.5 M
+        Is this ok [y/N]: y
+    
       
-      [root@almalinux9 x86_64]# systemctl start nginx
-      [root@almalinux9 x86_64]# systemctl status nginx
-      ● nginx.service - The nginx HTTP and reverse proxy server
+        [root@almalinux9 x86_64]# systemctl start nginx
+        [root@almalinux9 x86_64]# systemctl status nginx
+        ● nginx.service - The nginx HTTP and reverse proxy server
            Loaded: loaded (/usr/lib/systemd/system/nginx.service; disabled; preset: disabled)
            Active: active (running) since Sun 2026-07-26 10:53:56 MSK; 7s ago
           Process: 48936 ExecStartPre=/usr/bin/rm -f /run/nginx.pid (code=exited, status=0/SUCCESS)
@@ -212,10 +221,10 @@ Apache с определенными опциями).
                    ├─48940 "nginx: worker process"
                    └─48941 "nginx: worker process"
       
-      Jul 26 10:53:56 almalinux9 systemd[1]: Starting The nginx HTTP and reverse proxy server...
-      Jul 26 10:53:56 almalinux9 nginx[48937]: nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
-      Jul 26 10:53:56 almalinux9 nginx[48937]: nginx: configuration file /etc/nginx/nginx.conf test is successful
-      Jul 26 10:53:56 almalinux9 systemd[1]: Started The nginx HTTP and reverse proxy server.
+        Jul 26 10:53:56 almalinux9 systemd[1]: Starting The nginx HTTP and reverse proxy server...
+        Jul 26 10:53:56 almalinux9 nginx[48937]: nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+        Jul 26 10:53:56 almalinux9 nginx[48937]: nginx: configuration file /etc/nginx/nginx.conf test is successful
+        Jul 26 10:53:56 almalinux9 systemd[1]: Started The nginx HTTP and reverse proxy server.
 
 ## Далее мы будем использовать его для доступа к своему репозиторию. ##
 
@@ -223,21 +232,26 @@ Apache с определенными опциями).
 # Приступим к созданию своего репозитория. Директория для статики у Nginx по умолчанию /usr/share/nginx/html. 
 
 *  Создадим там каталог repo:
-      [root@almalinux9 x86_64]# mkdir /usr/share/nginx/html/repo
+
+       [root@almalinux9 x86_64]# mkdir /usr/share/nginx/html/repo
 
 *  Копируем в каталог наши собранные RPM-пакеты:
-      [root@almalinux9 x86_64]# cp ~/rpmbuild/RPMS/x86_64/*.rpm /usr/share/nginx/html/repo/
+
+       [root@almalinux9 x86_64]# cp ~/rpmbuild/RPMS/x86_64/*.rpm /usr/share/nginx/html/repo/
 
 *  Инициализируем репозиторий командой:
-      [root@almalinux9 x86_64]# createrepo /usr/share/nginx/html/repo/
-      Directory walk started
-      Directory walk done - 10 packages
-      Temporary output repo path: /usr/share/nginx/html/repo/.repodata/
-      Preparing sqlite DBs
-      Pool started (with 5 workers)
-      Pool finished
+
+       [root@almalinux9 x86_64]# createrepo /usr/share/nginx/html/repo/
+       Directory walk started
+       Directory walk done - 10 packages
+       Temporary output repo path: /usr/share/nginx/html/repo/.repodata/
+       Preparing sqlite DBs
+       Pool started (with 5 workers)
+       Pool finished
 
 *  Для прозрачности настроим в NGINX доступ к листингу каталога. В файле /etc/nginx/nginx.conf в блоке server добавим следующие директивы:
+
+
        [root@almalinux9 x86_64]# nano /etc/nginx/nginx.conf
        server {
 	        listen       80;
@@ -261,88 +275,96 @@ Apache с определенными опциями).
     }
 
 *  Проверяем синтаксис и перезапускаем NGINX:
-    [root@almalinux9 x86_64]# nginx -t
-    nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
-    nginx: configuration file /etc/nginx/nginx.conf test is successful
+ 
+       [root@almalinux9 x86_64]# nginx -t
+       nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+       nginx: configuration file /etc/nginx/nginx.conf test is successful
 
-    [root@almalinux9 x86_64]# nginx -s reload
+       [root@almalinux9 x86_64]# nginx -s reload
 
 *  Теперь ради интереса можно посмотреть в браузере или с помощью curl:
-    [root@almalinux9 x86_64]# curl -a http://localhost/repo/
-    <html>
-    <head><title>Index of /repo/</title></head>
-    <body>
-    <h1>Index of /repo/</h1><hr><pre><a href="../">../</a>
-    <a href="repodata/">repodata/</a>                                          26-Jul-2026 08:01                   -
-    <a href="nginx-1.20.1-28.el9.4.alma.1.x86_64.rpm">nginx-1.20.1-28.el9.4.alma.1.x86_64.rpm</a>            26-Jul-2026 08:00               38277
-    <a href="nginx-all-modules-1.20.1-28.el9.4.alma.1.noarch.rpm">nginx-all-modules-1.20.1-28.el9.4.alma.1.noarch..&gt;</a> 26-Jul-2026 08:00                9377
-    <a href="nginx-core-1.20.1-28.el9.4.alma.1.x86_64.rpm">nginx-core-1.20.1-28.el9.4.alma.1.x86_64.rpm</a>       26-Jul-2026 08:00             1032726
-    <a href="nginx-filesystem-1.20.1-28.el9.4.alma.1.noarch.rpm">nginx-filesystem-1.20.1-28.el9.4.alma.1.noarch.rpm</a> 26-Jul-2026 08:00               10977
-    <a href="nginx-mod-devel-1.20.1-28.el9.4.alma.1.x86_64.rpm">nginx-mod-devel-1.20.1-28.el9.4.alma.1.x86_64.rpm</a>  26-Jul-2026 08:00              763139
-    <a href="nginx-mod-http-image-filter-1.20.1-28.el9.4.alma.1.x86_64.rpm">nginx-mod-http-image-filter-1.20.1-28.el9.4.alm..&gt;</a> 26-Jul-2026 08:00               21361
-    <a href="nginx-mod-http-perl-1.20.1-28.el9.4.alma.1.x86_64.rpm">nginx-mod-http-perl-1.20.1-28.el9.4.alma.1.x86_..&gt;</a> 26-Jul-2026 08:00               32888
-    <a href="nginx-mod-http-xslt-filter-1.20.1-28.el9.4.alma.1.x86_64.rpm">nginx-mod-http-xslt-filter-1.20.1-28.el9.4.alma..&gt;</a> 26-Jul-2026 08:00               20167
-    <a href="nginx-mod-mail-1.20.1-28.el9.4.alma.1.x86_64.rpm">nginx-mod-mail-1.20.1-28.el9.4.alma.1.x86_64.rpm</a>   26-Jul-2026 08:00               55771
-    <a href="nginx-mod-stream-1.20.1-28.el9.4.alma.1.x86_64.rpm">nginx-mod-stream-1.20.1-28.el9.4.alma.1.x86_64.rpm</a> 26-Jul-2026 08:00               82317
-    </pre><hr></body>
-    </html>
+
+       [root@almalinux9 x86_64]# curl -a http://localhost/repo/
+       <html>
+       <head><title>Index of /repo/</title></head>
+       <body>
+       <h1>Index of /repo/</h1><hr><pre><a href="../">../</a>
+       <a href="repodata/">repodata/</a>                                          26-Jul-2026 08:01                   -
+       <a href="nginx-1.20.1-28.el9.4.alma.1.x86_64.rpm">nginx-1.20.1-28.el9.4.alma.1.x86_64.rpm</a>            26-Jul-2026 08:00               38277
+       <a href="nginx-all-modules-1.20.1-28.el9.4.alma.1.noarch.rpm">nginx-all-modules-1.20.1-28.el9.4.alma.1.noarch..&gt;</a> 26-Jul-2026 08:00                9377
+       <a href="nginx-core-1.20.1-28.el9.4.alma.1.x86_64.rpm">nginx-core-1.20.1-28.el9.4.alma.1.x86_64.rpm</a>       26-Jul-2026 08:00             1032726
+       <a href="nginx-filesystem-1.20.1-28.el9.4.alma.1.noarch.rpm">nginx-filesystem-1.20.1-28.el9.4.alma.1.noarch.rpm</a> 26-Jul-2026 08:00               10977
+       <a href="nginx-mod-devel-1.20.1-28.el9.4.alma.1.x86_64.rpm">nginx-mod-devel-1.20.1-28.el9.4.alma.1.x86_64.rpm</a>  26-Jul-2026 08:00              763139
+       <a href="nginx-mod-http-image-filter-1.20.1-28.el9.4.alma.1.x86_64.rpm">nginx-mod-http-image-filter-1.20.1-28.el9.4.alm..&gt;</a> 26-Jul-2026 08:00               21361
+       <a href="nginx-mod-http-perl-1.20.1-28.el9.4.alma.1.x86_64.rpm">nginx-mod-http-perl-1.20.1-28.el9.4.alma.1.x86_..&gt;</a> 26-Jul-2026 08:00               32888
+       <a href="nginx-mod-http-xslt-filter-1.20.1-28.el9.4.alma.1.x86_64.rpm">nginx-mod-http-xslt-filter-1.20.1-28.el9.4.alma..&gt;</a> 26-Jul-2026 08:00               20167
+       <a href="nginx-mod-mail-1.20.1-28.el9.4.alma.1.x86_64.rpm">nginx-mod-mail-1.20.1-28.el9.4.alma.1.x86_64.rpm</a>   26-Jul-2026 08:00               55771
+       <a href="nginx-mod-stream-1.20.1-28.el9.4.alma.1.x86_64.rpm">nginx-mod-stream-1.20.1-28.el9.4.alma.1.x86_64.rpm</a> 26-Jul-2026 08:00               82317
+       </pre><hr></body>
+       </html>
     
 ## *  Все готово для того, чтобы протестировать репозиторий. ##
 
 *  Добавим его в /etc/yum.repos.d:
-    [root@almalinux9 x86_64]# cat >> /etc/yum.repos.d/otus.repo << EOF
-    [otus]
-    name=otus-linux
-    baseurl=http://localhost/repo
-    gpgcheck=0
-    enabled=1
-    EOF
+
+       [root@almalinux9 x86_64]# cat >> /etc/yum.repos.d/otus.repo << EOF
+       [otus]
+       name=otus-linux
+       baseurl=http://localhost/repo
+       gpgcheck=0
+       enabled=1
+       EOF
     
 *  Убедимся, что репозиторий подключился и посмотрим, что в нем есть:
-    [root@almalinux9 x86_64]# yum repolist enabled | grep otus
-    otus                             otus-linux
+
+       [root@almalinux9 x86_64]# yum repolist enabled | grep otus
+       otus                             otus-linux
 
 *  Добавим пакет в наш репозиторий:
-    [root@almalinux9 repo]# wget https://repo.percona.com/yum/percona-release-latest.noarch.rpm
-    --2026-07-26 11:19:37--  https://repo.percona.com/yum/percona-release-latest.noarch.rpm
-    Resolving repo.percona.com (repo.percona.com)... 49.12.125.205, 2a01:4f8:242:5792::2
-    Connecting to repo.percona.com (repo.percona.com)|49.12.125.205|:443... connected.
-    HTTP request sent, awaiting response... 200 OK
-    Length: 28152 (27K) [application/x-redhat-package-manager]
-    Saving to: ‘percona-release-latest.noarch.rpm’
+
+       [root@almalinux9 repo]# wget https://repo.percona.com/yum/percona-release-latest.noarch.rpm
+       --2026-07-26 11:19:37--  https://repo.percona.com/yum/percona-release-latest.noarch.rpm
+       Resolving repo.percona.com (repo.percona.com)... 49.12.125.205, 2a01:4f8:242:5792::2
+       Connecting to repo.percona.com (repo.percona.com)|49.12.125.205|:443... connected.
+       HTTP request sent, awaiting response... 200 OK
+       Length: 28152 (27K) [application/x-redhat-package-manager]
+       Saving to: ‘percona-release-latest.noarch.rpm’
     
-    percona-release-latest.noarch.rpm        100%
+       percona-release-latest.noarch.rpm        100%
 
 *  Обновим список пакетов в репозитории:
-    [root@almalinux9 repo]# createrepo /usr/share/nginx/html/repo/
-    Directory walk started
-    Directory walk done - 11 packages
-    Temporary output repo path: /usr/share/nginx/html/repo/.repodata/
-    Preparing sqlite DBs
-    Pool started (with 5 workers)
-    Pool finished
+
+       [root@almalinux9 repo]# createrepo /usr/share/nginx/html/repo/
+       Directory walk started
+       Directory walk done - 11 packages
+       Temporary output repo path: /usr/share/nginx/html/repo/.repodata/
+       Preparing sqlite DBs
+       Pool started (with 5 workers)
+       Pool finished
     
-    [root@almalinux9 repo]#  yum makecache
-    AlmaLinux 9 - AppStream  
-    AlmaLinux 9 - BaseOS     
-    AlmaLinux 9 - Extras     
-    otus-linux               
-    Metadata cache created.
+       [root@almalinux9 repo]#  yum makecache
+       AlmaLinux 9 - AppStream  
+       AlmaLinux 9 - BaseOS     
+       AlmaLinux 9 - Extras     
+       otus-linux               
+       Metadata cache created.
     
-    [root@almalinux9 repo]# yum list | grep otus
-    percona-release.noarch 
+       [root@almalinux9 repo]# yum list | grep otus
+       percona-release.noarch 
 
 *  Так как Nginx у нас уже стоит, установим репозиторий percona-release:
-    [root@almalinux9 repo]# yum install -y percona-release.noarch
-    Last metadata expiration check: 0:02:36 ago on Sun Jul 26 11:21:10 2026.
-    Dependencies resolved.
-    ...
-    Installed:
-    percona-release-1.0-33.noarch                                                                                                                                   
-    Complete!
+
+       [root@almalinux9 repo]# yum install -y percona-release.noarch
+       Last metadata expiration check: 0:02:36 ago on Sun Jul 26 11:21:10 2026.
+       Dependencies resolved.
+       ...
+       Installed:
+       percona-release-1.0-33.noarch                                                                                                                                   
+       Complete!
     
 ## Все прошло успешно. 
 *  В случае, если вам потребуется обновить репозиторий (а это делается при каждом добавлении файлов) снова, 
-   то выполните команду 
-      createrepo /usr/share/nginx/html/repo/.
+   то выполните команду
+   
+        createrepo /usr/share/nginx/html/repo/.
 
