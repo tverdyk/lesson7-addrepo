@@ -6,8 +6,8 @@ Apache с определенными опциями).
 
 # Создать свой RPM пакет
 *  Подготовка
-      [root@almalinux9 ~]# yum install -y wget rpmdevtools rpm-build createrepo yum-utils cmake gcc git nano -y
-
+*  
+      [root@almalinux9 ~]# yum install -y wget rpmdevtools rpm-build              createrepo yum-utils cmake gcc git nano -y
 *  Возьмем пакет Nginx и соберем его с дополнительным модулем ngx_broli.
    Загрузим SRPM пакет Nginx для дальнейшей работы над ним.
  
